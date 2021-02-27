@@ -36,6 +36,7 @@ class SuratMasuk {
   String pengirim;
   String noSurat;
   String tglSurat;
+  String keteranganLaporan;
   String perihal;
   String isiRingkas;
   String fileSurat;
@@ -61,6 +62,7 @@ class SuratMasuk {
   List<Skbapl> skbapl;
   List<FotoLaporan> fotoLaporan;
   int fotoLaporanCount;
+  String sesuai;
 
   SuratMasuk(
       {this.idDisposisi,
@@ -95,7 +97,9 @@ class SuratMasuk {
       this.parent,
       this.statusBaca,
       this.statusSelesai,
+      this.keteranganLaporan,
       this.disposSurat,
+      this.sesuai,
       this.skbapl,
       this.fotoLaporan,
       this.fotoLaporanCount});
@@ -103,6 +107,8 @@ class SuratMasuk {
   SuratMasuk.fromJson(Map<String, dynamic> json) {
     idDisposisi = json['id_disposisi'];
     inputTeruskan = json['input_teruskan'];
+    sesuai = json['sesuai'];
+    keteranganLaporan = json['keterangan_laporan'];
     catatan = json['catatan'];
     idSuratIn = json['id_surat_in'];
     userInput = json['user_input'];
@@ -122,11 +128,11 @@ class SuratMasuk {
     kodeKategori = json['kode_kategori'];
     namaKategori = json['nama_kategori'];
     uraian = json['uraian'];
-    idDispDetailTujuan = json['id_disp_detail_tujuan'];
+    idDispDetailTujuan = json['id_disp_detail_tujuan'] ?? '';
     idJabatan = json['id_jabatan'];
     idUser = json['id_user'];
     statusLaporan = json['status_laporan'];
-    baplId = json['bapl_id'];
+    baplId = json['bapl_id'] ?? '';
     progres = json['progres'];
     nama = json['nama'];
     alamat = json['alamat'];

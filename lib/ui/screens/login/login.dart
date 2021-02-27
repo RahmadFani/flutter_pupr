@@ -16,6 +16,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoading = false;
 
+  GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
+
   @override
   void dispose() {
     _username.dispose();
@@ -26,12 +28,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffold,
       backgroundColor: Colors.white,
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (ctx, state) {
           if(state is AuthError ){ 
-            
-           print('sdfa');
+            _scaffold.currentState.showSnackBar(
+              SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                content:Text( 'Gagal silahkan periksa username/password.'),
+              action: SnackBarAction(label: 'close', onPressed: () {
+                _scaffold.currentState.hideCurrentSnackBar();
+              }),)
+            );
           }
           if (state is AuthLoading) {
             setState(() {

@@ -27,18 +27,17 @@ class ApiSuratMasukRepository implements SuratMasukRepository {
           HttpHeaders.authorizationHeader: '$token'
         }
       );
-
       if (result.statusCode == 200) {
 
         final json = jsonDecode(result.body);
-
+        log(json.toString());
         listSuratMasuk = ListSuratMasuk.fromJson(json);
         return listSuratMasuk;
       } else {
         throw Error();
       }
     } catch (e) {
-      log(e.toString());
+      log('error '+e.toString());
       return throw Error();
     }
   }

@@ -4,3 +4,5 @@ part of 'surat_masuk_bloc.dart';
 abstract class SuratMasukEvent {}
 
 class LoadSuratMasuk extends SuratMasukEvent {}
+
+class SuratMasukDispose extends SuratMasukEvent {}

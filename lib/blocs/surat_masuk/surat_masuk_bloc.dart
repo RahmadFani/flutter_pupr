@@ -19,6 +19,9 @@ class SuratMasukBloc extends Bloc<SuratMasukEvent, SuratMasukState> {
     if (event is LoadSuratMasuk) {
       yield* _mapLoadSuratMasuk();
     }
+    if (event is SuratMasukDispose) {
+       yield SuratMasukInitial();
+    }
   }
 
   Stream<SuratMasukState> _mapLoadSuratMasuk() async* {

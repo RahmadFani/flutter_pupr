@@ -35,9 +35,12 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   Stream<AuthenticationState> _mapAuthIsStart() async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
+
     if (token != '') {
       final userJson  = jsonDecode(prefs.getString('user') ?? Map<String, dynamic>()); 
       UserModel user = UserModel.fromJson(userJson);
+      
+      print(token);
 
       yield Authenticated(user);
     } else {

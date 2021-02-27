@@ -85,6 +85,31 @@ class STLaporanViewPage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
+               suratMasuk.sesuai == '0' ?
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+              'Keterangan.',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('${suratMasuk.keteranganLaporan}'),
+              ),
+            ),
+                  ],
+                ) : SizedBox(),
+                SizedBox(height:10),
               Text(
                 'Foto Laporan.',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -94,8 +119,10 @@ class STLaporanViewPage extends StatelessWidget {
                   : Text(
                       'Tidak Ada Foto',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
-                    )
-            ])),
+                    ),
+             
+              
+            ]),),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),

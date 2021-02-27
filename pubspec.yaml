@@ -34,10 +34,18 @@ dependencies:
   flutter_spinkit:
   url_launcher:
   file_picker:
+  pull_to_refresh:
+  flutter_launcher_icons:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "images/logo_pupr.jpg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -27,6 +28,7 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
   TextEditingController nama = TextEditingController();
   TextEditingController alamat = TextEditingController();
   TextEditingController progres = TextEditingController();
+  TextEditingController keterangan = TextEditingController();
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
     nama.dispose();
     alamat.dispose();
     progres.dispose();
+    keterangan.dispose();
     super.dispose();
   }
 
@@ -46,9 +49,10 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
     if (widget.suratMasuk.statusLaporan == '1') {
       setState(() {
         isEdit = true;
-        nama.text = widget.suratMasuk.nama;
-        alamat.text = widget.suratMasuk.alamat;
-        progres.text = widget.suratMasuk.progres;
+        nama.text = widget.suratMasuk.nama ?? '';
+        alamat.text = widget.suratMasuk.alamat ?? '';
+        progres.text = widget.suratMasuk.progres ?? '';
+        keterangan.text = widget.suratMasuk.keteranganLaporan;
       });
     }
   }
@@ -93,7 +97,10 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
         ..fields['nama'] = nama.text
         ..fields['alamat'] = alamat.text
         ..fields['progres'] = progres.text
-        ..fields['is_edit'] = isEdit ? '1' : '0';
+        ..fields['is_edit'] = isEdit ? '1' : '0'
+        ..fields['is_sesuai'] = isBerkasSesuai ? '1': '0'
+        ..fields['keterangan'] = keterangan.text;
+
       if (bapl != null) {
         request.files.add(await http.MultipartFile.fromPath('bapl', bapl.path));
       }
@@ -105,12 +112,9 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
 
       var response = await request.send();
       if (response.statusCode == 200) {
-        response.stream.transform(utf8.decoder).listen((event) {
-          print(event);
-          BlocProvider.of<SuratMasukBloc>(context).add(LoadSuratMasuk());
+        BlocProvider.of<SuratMasukBloc>(context).add(LoadSuratMasuk());
           Navigator.pop(context);
           Navigator.pop(context);
-        });
       }
     } catch (e) {
       print(e);
@@ -120,6 +124,8 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
       });
     }
   }
+
+  bool isBerkasSesuai = false;
 
   @override
   Widget build(BuildContext context) {
@@ -176,12 +182,55 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
                                 OutlineInputBorder(borderSide: BorderSide()),
                             hintText: 'Masukan Progres'),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical:8.0),
+                        child: Row(
+                          children: [
+                            Text('Berkas Sesuai:', style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),),
+                            Radio(value: true, groupValue: isBerkasSesuai, onChanged: (value) {
+                              setState(() {
+                                isBerkasSesuai = value;
+                              });
+                            }),
+                            Text('Sesuai'),
+                            Radio(value: false, groupValue: isBerkasSesuai, onChanged: (value) {
+                              setState(() {
+                                isBerkasSesuai = value;
+                              });
+                            }),
+                            Text('Tidak Sesuai'),
+                          ],
+                        ),
+                      ),
+                      !isBerkasSesuai ? Padding(
+                        padding: const EdgeInsets.only(bottom:8.0),
+                        child: TextField(
+                          controller: keterangan,
+                          decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor
+                              )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor
+                              )
+                            ),
+                            labelText: "Keterangan",
+
+                          ),
+                          maxLines: 5,
+                          
+                        ),
+                      ) : SizedBox.shrink(),
                       fotoLaporan.length > 0
                           ? Column(
                               children: [
-                                SizedBox(
-                                  height: 8,
-                                ),
+                                
                                 Container(
                                   height: 120,
                                   child: GridView.count(
@@ -201,9 +250,7 @@ class _STLaporanCreateState extends State<STLaporanAdd> {
                               ],
                             )
                           : SizedBox.shrink(),
-                      SizedBox(
-                        height: 8,
-                      ),
+                      
                       Container(
                         height: 50,
                         width: double.infinity,

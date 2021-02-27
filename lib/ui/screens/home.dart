@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pupr/blocs/authentication/authentication_bloc.dart';
+import 'package:pupr/blocs/surat_masuk/surat_masuk_bloc.dart';
 import 'package:pupr/models/user_model.dart';
 
 class HomePage extends StatelessWidget {
@@ -77,6 +78,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 BlocProvider.of<AuthenticationBloc>(context).add(AuthLogout());
+                BlocProvider.of<SuratMasukBloc>(context).add(SuratMasukDispose());
               },
               leading: Icon(Icons.login),
               title: Text('Logout'),
